@@ -31,7 +31,7 @@ pipeline {
                      echo 'Deploying myapp om live server'
                     sshagent(['ssh-credentials-for-live-server']) {
                       sh '''
-                      ssh -o StrictHostKeyChecking=no ubuntu@65.1.107.180<<EOF
+                      ssh -o StrictHostKeyChecking=no ubuntu@172.31.1.23<<EOF
                        mkdir nodeapp1
                        cd nodeapp1
                     git init
