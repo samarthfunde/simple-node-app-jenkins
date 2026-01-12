@@ -27,8 +27,26 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'This is Deploying Project'
+                script{
+                     echo 'Deploying myapp om live server'
+                    sshagent(['ssh-credentials-for-live-server']) {
+                      sh '''
+                      ssh -o StrictHostKeyChecking=no ubuntu@65.1.107.180<<EOF
+                       mkdir nodeapp1
+                       cd nodeapp1
+                    git init
+                    git pull "https://github.com/samarthfunde/simple-node-app-jenkins.git" 
+                    sudo apt update
+                   sudo apt install nodejs npm -y
+                    npm install
+                    sudo npm install -g pm2
+                    pm2 restart app.js || pm2 start app.js
+                    exit
+                    EOF
+                    '''
             }
         }
+    }
+}
     }
 }
