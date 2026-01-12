@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+    tools {
+        nodejs 'mynodeapp'
+    }
+    stages {
+        stage('cloning-1') {
+            steps {
+                echo 'cloning from github'
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/samarthfunde/simple-node-app-jenkins.git']])
+                echo "cloned successfully...."
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'this is building project'
+                sh 'npm install'
+                echo 'Build successfully...'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing project'
+                sh './node_modules/mocha/bin/_mocha --exit ./test/test.js'
+                echo "tested successfullly........."
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'This is Deploying Project'
+            }
+        }
+    }
+}
